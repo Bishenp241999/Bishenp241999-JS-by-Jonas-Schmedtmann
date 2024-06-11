@@ -11,14 +11,16 @@ import { async } from 'regenerator-runtime';
 // https://forkify-api.herokuapp.com/v2
 
 ///////////////////////////////////////
-
+// if (module.hot) {
+//   module.hot.accept();
+// }
 const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1);
     // guard clause if we have no id
     if (!id) return;
     recipeView.renderSpinner();
-    // 1.Loading recipr from API
+    // 1.Loading recipe from API
     // console.log("before request");
     await model.loadRecipe(id);
 
@@ -34,17 +36,19 @@ const controlRecipes = async function () {
 
 const controlSearchResults = async function () {
   try {
+   resultsView.renderSpinner();
     // 1) Get search query
     const query = searchView.getQuery();
     // console.log(query);
     if (!query) return;
+    
 
     // 2) Load search results
     await model.loadSearchResults(query);
 
     // 3) Render results
-    console.log(model.state.search.results);
-    resultsView.render(model.state.search.results)
+    // console.log(model.state.search.results);
+    resultsView.render(model.getSearchResultsPage(1))
   } catch (error) {
     console.log(error);
   }

@@ -2,28 +2,28 @@ import { API_URL } from "./config";
 import { getJSON } from "./helpers";
 
 export const state = {
-    rec: {},
-    search:{
-        query:'',
-        results:[]
+    recipe: {},
+    search: {
+        query: '',
+        results: []
     }
 }
 
 export const loadRecipe = async function (id) {
     try {
         const data = await getJSON(`${API_URL}${id}`)
-        const { rec } = data.data;
-        state.rec = {
-            id: rec.id,
-            title: rec.title,
-            publisher: rec.publisher,
-            sourceUrl: rec.source_url,
-            image: rec.image_url,
-            servings: rec.servings,
-            cookingTime: rec.cooking_time,
-            ingredients: rec.ingredients
+        const { recipe } = data.data;
+        state.recipe = {
+            id: recipe.id,
+            title: recipe.title,
+            publisher: recipe.publisher,
+            sourceUrl: recipe.source_url,
+            image: recipe.image_url,
+            servings: recipe.servings,
+            cookingTime: recipe.cooking_time,
+            ingredients: recipe.ingredients
         }
-        console.log(state.rec);
+        console.log(state.recipe);
     } catch (error) {
         // alert(error);
         throw error;
@@ -31,12 +31,12 @@ export const loadRecipe = async function (id) {
 
 }
 
-export const loadSearchResults = async function(query){
+export const loadSearchResults = async function (query) {
     try {
         state.search.query = query;
         const data = await getJSON(`${API_URL}?search=${query}`);
-        state.search.results =data.data.recipes.map(rec=> {
-            return{
+        state.search.results = data.data.recipes.map(rec => {
+            return {
                 id: rec.id,
                 title: rec.title,
                 publisher: rec.publisher,
@@ -44,7 +44,7 @@ export const loadSearchResults = async function(query){
             }
         })
         // console.log(state.search.results);
-        
+
     } catch (error) {
         throw error;
     }
